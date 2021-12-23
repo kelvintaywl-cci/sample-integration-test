@@ -1,0 +1,56 @@
+version: 2.1
+
+parameters:
+  run-test-1:
+    type: boolean
+    default: false
+  run-test-2:
+    type: boolean
+    default: false
+  run-test-3:
+    type: boolean
+    default: false
+  environment:
+    type: enum
+    enum:
+      - development
+      - staging
+    default: development
+
+jobs:
+  integration-test:
+    docker:
+      - image: cimg/base:stabel
+    resource_class: small
+    parameters:
+      environment:
+        type: string
+        default: development
+      class:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Mock integration test << parameters.class >> on << parameters.environment >>
+          command: |
+            echo "Running integration test << parameters.class >> on << parameters.environment >>"
+
+workflows:
+  test-1:
+    when: << pipeline.parameters.run-test-1 >>
+    jobs:
+      - integration-test:
+          environment: << pipeline.parameters.environment >>
+          class: "1"
+  test-2:
+    when: << pipeline.parameters.run-test-2 >>
+    jobs:
+      - integration-test:
+          environment: << pipeline.parameters.environment >>
+          class: "2"
+  test-3:
+    when: << pipeline.parameters.run-test-3 >>
+    jobs:
+      - integration-test:
+          environment: << pipeline.parameters.environment >>
+          class: "3"
