@@ -20,7 +20,7 @@ parameters:
 jobs:
   integration-test:
     docker:
-      - image: cimg/base:stabel
+      - image: cimg/base:stable
     resource_class: small
     parameters:
       environment:
