@@ -1,13 +1,14 @@
+
 version: 2.1
 
 parameters:
-  run-test-1:
+  run-test-a:
     type: boolean
     default: false
-  run-test-2:
+  run-test-b:
     type: boolean
     default: false
-  run-test-3:
+  run-test-c:
     type: boolean
     default: false
   environment:
@@ -26,31 +27,30 @@ jobs:
       environment:
         type: string
         default: development
-      class:
+      test-name:
         type: string
         default: ""
     steps:
       - run:
-          name: Mock integration test << parameters.class >> on << parameters.environment >>
+          name: Mock integration test << parameters.test-name >> on << parameters.environment >>
           command: |
-            echo "Running integration test << parameters.class >> on << parameters.environment >>"
-
+            echo "Running integration test << parameters.test-name >> on << parameters.environment >>"
 workflows:
-  test-1:
-    when: << pipeline.parameters.run-test-1 >>
+  test-a:
+    when: << pipeline.parameters.run-test-a >>
     jobs:
       - integration-test:
           environment: << pipeline.parameters.environment >>
-          class: "1"
-  test-2:
-    when: << pipeline.parameters.run-test-2 >>
+          test-name: a
+  test-b:
+    when: << pipeline.parameters.run-test-b >>
     jobs:
       - integration-test:
           environment: << pipeline.parameters.environment >>
-          class: "2"
-  test-3:
-    when: << pipeline.parameters.run-test-3 >>
+          test-name: b
+  test-c:
+    when: << pipeline.parameters.run-test-c >>
     jobs:
       - integration-test:
           environment: << pipeline.parameters.environment >>
-          class: "3"
+          test-name: c
